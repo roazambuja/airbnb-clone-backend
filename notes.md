@@ -22,8 +22,19 @@ Igual a roberta falou pode ter um schema pra reserva igual no ngc da biblioteca
 {
   "nome": string,
   "idDono": id no schema de usuarios la,
+  "descricao": string,
+  "categoria": string,
+  "imagem": string <link>,
   "preço": number,
-  "local": <talvez o CEP?> number,
+  "local": {
+    "numero": number,
+    "rua": string,
+    "complemento": string,
+    "cidade": string,
+    "estado": string,
+    "pais": string,
+    "cep": number,
+  },
   "numeroDePessoas": number,
   "comodidades": {
       "cozinha": number, (to pensando q esse numero pode ser a quantidade, ai se é 0 significa q n tem)
