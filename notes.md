@@ -43,8 +43,8 @@ Igual a roberta falou pode ter um schema pra reserva igual no ngc da biblioteca
 
 ```JSON
 {
-  "idLocador": (cara dono da casa eu acho) pode ser o id do usuario,
-  "idLocatario": mesma coisa, id do usuario,
+  "idLocador": pode ser o id do usuario,
+  "idAcomodacao": id da acomodacao,
   "dataDeInicio": Date,
   "dataDeTermino": Date
 }
