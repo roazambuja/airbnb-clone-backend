@@ -1,5 +1,4 @@
 import app from "./app";
-import { disconnect } from "mongoose";
 
 async function main() {
     app.listen(app.get("port"), () => {
