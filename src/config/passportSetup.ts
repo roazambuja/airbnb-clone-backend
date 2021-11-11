@@ -26,7 +26,7 @@ passport.use(
     new LocalStrategy(
         {
             usernameField: "email",
-            passwordField: "password",
+            passwordField: "senha",
             passReqToCallback: true,
         },
         async (req, email, password, done) => {
@@ -78,7 +78,7 @@ passport.use(
 
                 if (!usuario) {
                     // usuario não existe, retorne um erro
-                    return done(null, false, { message: "Email ou senha incorretos." });
+                    return done(null, false, { message: "Email ou senha incorretos" });
                 }
 
                 // comparar os hashs das senhas

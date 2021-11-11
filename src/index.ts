@@ -6,9 +6,6 @@ async function main() {
         console.log("Express na porta:", app.get("port"));
         console.log("Express no modo:", app.get("env"));
     });
-
-    await disconnect();
-    console.log("Desconectado do MongoDb Atlas");
 }
 
 main();

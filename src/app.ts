@@ -5,7 +5,7 @@ import mongoose from "mongoose";
 import session from "express-session";
 import MongoStore from "connect-mongo";
 import cors from "cors";
-import passport from "passport";
+import passport from "./config/passportSetup";
 import { json, urlencoded } from "body-parser";
 import { router as aloRouter } from "./routes/alo.routes";
 import { router as authRouter, path as authPath } from "./routes/auth.routes";
@@ -15,13 +15,13 @@ app.set("port", process.env.PORT || 3000);
 const uriMongoDB = process.env.MONGO_URL || "mongodb://localhost:27017/";
 
 // conectar ao banco de dados
-try {
-    mongoose.connect(uriMongoDB);
-    console.log("Conectado ao MongoDb Atlas");
-} catch (err) {
-    console.log("Falha de acesso ao BD:");
-    console.error(err);
-}
+mongoose
+    .connect(uriMongoDB)
+    .then(() => console.log("Conectado ao MongoDb Atlas"))
+    .catch((err) => {
+        console.log("Falha de acesso ao BD:");
+        console.error(err);
+    });
 
 app.use(cors());
 app.use(json());
