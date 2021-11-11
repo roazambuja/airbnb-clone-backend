@@ -1,6 +1,9 @@
 import express from "express";
 import morgan from "morgan";
 import errorHandler from "errorhandler";
+import mongoose from "mongoose";
+import session from "express-session";
+import MongoStore from "connect-mongo";
 import cors from "cors";
 import passport from "passport";
 import { json, urlencoded } from "body-parser";
@@ -8,13 +11,44 @@ import { router as aloRouter } from "./routes/alo.routes";
 import { router as authRouter, path as authPath } from "./routes/auth.routes";
 
 const app = express();
-
 app.set("port", process.env.PORT || 3000);
+const uriMongoDB = process.env.MONGO_URL || "mongodb://localhost:27017/";
+
+// conectar ao banco de dados
+try {
+    mongoose.connect(uriMongoDB);
+    console.log("Conectado ao MongoDb Atlas");
+} catch (err) {
+    console.log("Falha de acesso ao BD:");
+    console.error(err);
+}
+
 app.use(cors());
 app.use(json());
 app.use(urlencoded({ extended: false }));
+
+// middleware para lidar a sessão de usuário
+const sessionOptions = {
+    secret: process.env.SESSION_SECRET!,
+    resave: false,
+    saveUninitialized: true,
+    store: new MongoStore({ mongoUrl: uriMongoDB }),
+    cookie: {
+        secure: false,
+    },
+};
+
+if (process.env.NODE_ENV === "production") {
+    app.set("trust proxy", 1); // trust first proxy
+    sessionOptions.cookie.secure = true; // serve secure cookies
+}
+
+app.use(session(sessionOptions));
+
+// passport
 app.use(passport.initialize());
 app.use(passport.session());
+
 if (process.env.NODE_ENV !== "production") {
     app.use(morgan("dev"));
     app.use(errorHandler());
