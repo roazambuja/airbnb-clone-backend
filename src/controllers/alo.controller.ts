@@ -1,8 +1,8 @@
-import { Request, Response } from 'express';
-import { validationResult } from 'express-validator';
+import { Request, Response } from "express";
+import { validationResult } from "express-validator";
 
 export function getAlo(req: Request, res: Response) {
-    res.send('Alô, Mundo!');
+    res.send("Alô, Mundo!");
 }
 
 export function getAloComParametro(req: Request, res: Response) {
@@ -11,24 +11,24 @@ export function getAloComParametro(req: Request, res: Response) {
 }
 
 export function postAlo(req: Request, res: Response) {
-    const {nome} = req.body;
+    const { nome } = req.body;
     if (nome) {
         res.send(`Alô, ${nome}!`);
     } else {
-        res.status(400).send('Nome é obrigatório');
+        res.status(400).send("Nome é obrigatório");
     }
 }
 
 export function postAloValidado(req: Request, res: Response) {
     const erros = validationResult(req);
     if (!erros.isEmpty()) {
-        res.status(400).json({erros: erros.array()});
+        res.status(400).json({ erros: erros.array() });
     } else {
-        const {nome} = req.body;
+        const { nome } = req.body;
         res.send(`Alô, ${nome}!`);
     }
 }
 
 export function getAloErro(req: Request, res: Response) {
-    throw new Error('Algo deu errado!');
+    throw new Error("Algo deu errado!");
 }

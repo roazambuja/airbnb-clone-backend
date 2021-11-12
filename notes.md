@@ -6,7 +6,7 @@
 - Filtrar por faixa de preço
 - Filtrar por local (por enquanto so verificar nome da cidade, ou do bairro, etc etc)
 - Filtrar pelo numero de pessoas que comporta
-- Filtrar por quais comodidades tem 
+- Filtrar por quais comodidades tem
 - Filtrar por quais regras tem
 - Filtrar por disponibilidade
 
