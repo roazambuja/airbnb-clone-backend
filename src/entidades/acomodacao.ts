@@ -1,6 +1,9 @@
+import {Schema, model, Mongoose } from "mongoose";
+
+
 export interface Acomodacao{
     nome: string,
-    idDono: string,
+    idLocador: string,
     descricao: string,
     categoria: string,
     imagem: string,
@@ -25,3 +28,35 @@ export interface Acomodacao{
     },
     reserva: boolean 
   }
+  
+  export const AcomodacaoSchema = new Schema<Acomodacao>({
+    nome: {type: String, required: true},
+   idLocador: {type: String, required: true},
+    descricao: {type: String, required: true},
+    categoria:{type: String, required: true},
+    imagem: {type: String, required: true},
+    preço: {type: Number, required: true},
+    local: {
+      numero: {type: Number, required: true},
+      rua: {type: String, required: true},
+      complemento: {type: String},
+      cidade: {type: String, required: true},
+      estado: {type: String, required: true},
+      pais: {type: String, required: true},
+      cep: {type: Number, required: true},
+    },
+    numeroDePessoas: {type: Number, required: true},
+    comodidades: {
+        cozinha: {type: Number, required: true}, 
+        banheiros: {type: Number, required: true},
+    },
+    regras: {
+        fumar:{type: Boolean},
+        animais: {type: Boolean},
+    },
+    reserva:{type: Boolean} 
+  
+  });
+
+  export const AcomodacaoModel = model<Acomodacao>("Acomodacao", AcomodacaoSchema, 
+  "acomodacao");
