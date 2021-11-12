@@ -58,5 +58,8 @@ export interface Acomodacao{
   
   });
 
-  export const AcomodacaoModel = model<Acomodacao>("Acomodacao", AcomodacaoSchema, 
-  "acomodacao");
+  export const AcomodacaoModel = model<Acomodacao>(
+    "Acomodacao", 
+    AcomodacaoSchema, 
+    "acomodacoes"
+  );
