@@ -5,6 +5,7 @@ import cors from 'cors';
 import passport from 'passport';
 import { json, urlencoded } from 'body-parser';
 import { router as aloRouter} from './routes/alo.routes';
+import { router as reservaRouter} from './routes/reservas.routes';
 import { router as authRouter, path as authPath } from './routes/auth.routes';
 import './util/auth';
 
@@ -21,5 +22,6 @@ if (process.env.NODE_ENV !== 'production') {
     app.use(morgan('tiny'));
 }
 app.use(`/api/v${process.env.API_VERSION}${authPath}`, authRouter);
-app.use(`/api/v${process.env.API_VERSION}`, aloRouter);
+app.use(`/api`, aloRouter);
+app.use(`/api`, reservaRouter);
 export default app;

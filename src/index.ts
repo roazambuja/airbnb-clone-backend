@@ -1,5 +1,5 @@
 import app from './app';
-import { connect, disconnect } from 'mongoose';
+import { connect } from 'mongoose';
 
 const uriMongoDB = process.env.MONGO_URL || 'mongodb://localhost:27017/';
 
@@ -16,10 +16,7 @@ async function main() {
     } catch (error) {
         console.log('Falha de acesso ao BD:');
         console.error(error);
-    } finally {
-        await disconnect();
-        console.log('Desconectado do MongoDb Atlas');
-    }
+    } 
 }
 
 main();
