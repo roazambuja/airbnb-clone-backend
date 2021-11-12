@@ -1,13 +1,12 @@
-import {Schema, model, Mongoose } from "mongoose";
+import { Schema, model } from "mongoose";
 
-
-export interface Acomodacao{
-    nome: string,
-    idLocador: string,
-    descricao: string,
-    categoria: string,
-    imagem: string,
-    preço: number,
+export interface Acomodacao {
+    nome: string;
+    idLocador: string;
+    descricao: string;
+    categoria: string;
+    imagem: string;
+    preço: number;
     local: {
         numero: number;
         rua: string;
@@ -23,43 +22,38 @@ export interface Acomodacao{
         banheiros: number;
     };
     regras: {
-        fumar: boolean,
-        animais: boolean,
-    },
-    reserva: boolean 
-  }
-  
-  export const AcomodacaoSchema = new Schema<Acomodacao>({
-    nome: {type: String, required: true},
-   idLocador: {type: String, required: true},
-    descricao: {type: String, required: true},
-    categoria:{type: String, required: true},
-    imagem: {type: String, required: true},
-    preço: {type: Number, required: true},
+        fumar: boolean;
+        animais: boolean;
+    };
+    reserva: boolean;
+}
+
+export const AcomodacaoSchema = new Schema<Acomodacao>({
+    nome: { type: String, required: true },
+    idLocador: { type: String, required: true },
+    descricao: { type: String, required: true },
+    categoria: { type: String, required: true },
+    imagem: { type: String, required: true },
+    preço: { type: Number, required: true },
     local: {
-      numero: {type: Number, required: true},
-      rua: {type: String, required: true},
-      complemento: {type: String},
-      cidade: {type: String, required: true},
-      estado: {type: String, required: true},
-      pais: {type: String, required: true},
-      cep: {type: Number, required: true},
+        numero: { type: Number, required: true },
+        rua: { type: String, required: true },
+        complemento: { type: String },
+        cidade: { type: String, required: true },
+        estado: { type: String, required: true },
+        pais: { type: String, required: true },
+        cep: { type: Number, required: true },
     },
-    numeroDePessoas: {type: Number, required: true},
+    numeroDePessoas: { type: Number, required: true },
     comodidades: {
-        cozinha: {type: Number, required: true}, 
-        banheiros: {type: Number, required: true},
+        cozinha: { type: Number, required: true },
+        banheiros: { type: Number, required: true },
     },
     regras: {
-        fumar:{type: Boolean},
-        animais: {type: Boolean},
+        fumar: { type: Boolean },
+        animais: { type: Boolean },
     },
-    reserva:{type: Boolean} 
-  
-  });
+    reserva: { type: Boolean },
+});
 
-  export const AcomodacaoModel = model<Acomodacao>(
-    "Acomodacao", 
-    AcomodacaoSchema, 
-    "acomodacoes"
-  );
+export const AcomodacaoModel = model<Acomodacao>("Acomodacao", AcomodacaoSchema, "acomodacoes");
