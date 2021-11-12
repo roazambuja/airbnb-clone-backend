@@ -8,6 +8,7 @@ import cors from "cors";
 import passport from "./config/passportSetup";
 import { json, urlencoded } from "body-parser";
 import { router as aloRouter } from "./routes/alo.routes";
+import { router as reservaRouter } from "./routes/reservas.routes";
 import { router as authRouter, path as authPath } from "./routes/auth.routes";
 
 const app = express();
@@ -57,5 +58,6 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 app.use(`/api/v${process.env.API_VERSION}${authPath}`, authRouter);
-app.use(`/api/v${process.env.API_VERSION}`, aloRouter);
+app.use(`/api`, aloRouter);
+app.use(`/api`, reservaRouter);
 export default app;
