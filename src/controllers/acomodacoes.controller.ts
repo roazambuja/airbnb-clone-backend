@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
 import qs from "qs";
 import { URL } from "url";
 
@@ -15,6 +15,8 @@ interface queryFiltro extends qs.ParsedQs {
 
 export function listarAcomodacoes(req: Request, res: Response) {
     // retirar o query para parsear com o qs
-    const query = new URL("http://localhost:3000/asd?jorge=asd").search.substring(1);
+    const query = new URL(req.originalUrl).search.substring(1);
     const queryParams: queryFiltro = qs.parse(query);
+
+    // construir query de busca no banco de dados
 }
