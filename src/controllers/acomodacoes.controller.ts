@@ -3,21 +3,21 @@ import qs from "qs";
 import { URL } from "url";
 import { AcomodacaoModel } from "../entidades/acomodacao";
 
-// interface com todos os possiveis filtros
-interface queryFiltro extends qs.ParsedQs {
-    nome?: string;
-    categoria?: string;
-    precoMin?: string;
-    precoMax?: string;
-    local?: { [key: string]: string };
-    capacidade?: string;
-    comodidades?: { [key: string]: string };
-    regras?: { [key: string]: "1" | "0" };
-}
-
 // um exemplo de uri é:
 // api/v1/acomodacoes?nome=x&precoMin=0&precoMax=0&local[numero]=32&local[rua]=x&local[cidade]=x&local[estado]=x&capacidade=0&comodidades[cozinha]=0&comodidades[banheiro]=0&regras[fumar]=<1 ou 0>&regras[animais]=<1 ou 0>
 export async function listarAcomodacoes(req: Request, res: Response) {
+    // interface com todos os possiveis filtros
+    interface queryFiltro extends qs.ParsedQs {
+        nome?: string;
+        categoria?: string;
+        precoMin?: string;
+        precoMax?: string;
+        local?: { [key: string]: string };
+        capacidade?: string;
+        comodidades?: { [key: string]: string };
+        regras?: { [key: string]: "1" | "0" };
+    }
+
     // retirar o query para parsear com o qs
     const query = new URL(req.originalUrl).search.substring(1);
     const queryParams: queryFiltro = qs.parse(query);
@@ -65,6 +65,15 @@ export async function listarAcomodacoes(req: Request, res: Response) {
         // e retorne as acomodações encontradas
         return res.status(200).send(acomodacoesFiltradas);
     } catch (err) {
-        return res.status(501).send({ message: err });
+        return res.status(500).send({ message: err });
+    }
+}
+
+export async function acomodacaoID(req: Request, res: Response) {
+    try {
+        const acomodacao = await AcomodacaoModel.findById(req.params.id);
+        return res.status(200).send(acomodacao);
+    } catch (err) {
+        return res.status(500).send({ message: err });
     }
 }
