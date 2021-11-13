@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import qs from "qs";
-import { URL } from "url";
 import { AcomodacaoModel } from "../entidades/acomodacao";
 
 // um exemplo de uri é:
@@ -19,7 +18,8 @@ export async function listarAcomodacoes(req: Request, res: Response) {
     }
 
     // retirar o query para parsear com o qs
-    const query = new URL(req.originalUrl).search.substring(1);
+    const startOfQuery = req.originalUrl.indexOf("?");
+    const query = startOfQuery !== -1 ? req.originalUrl.substring(startOfQuery + 1) : "";
     const queryParams: queryFiltro = qs.parse(query);
 
     let filtroMongoose: { [key: string]: any } = {};
@@ -31,26 +31,27 @@ export async function listarAcomodacoes(req: Request, res: Response) {
         if (key === "comodidades") {
             for (const comodidade in queryParams[key]) {
                 const numComodidade = Number.parseInt(queryParams[key]![comodidade], 10);
-                filtroMongoose[key][comodidade] = { $gte: numComodidade };
+                filtroMongoose[`${key}.${comodidade}`] = { $gte: numComodidade };
             }
         } else if (key === "regras") {
             for (const regra in queryParams[key]) {
                 const regraPermitida = queryParams[key]![regra] === "1" ? true : false;
-                filtroMongoose[key][regra] = regraPermitida;
+                filtroMongoose[`${key}.${regra}`] = regraPermitida;
             }
         } else if (key === "local") {
             for (const definicaoLocal in queryParams[key]) {
-                filtroMongoose[key][definicaoLocal] = new RegExp(queryParams[key]![definicaoLocal], "ig");
+                filtroMongoose[`${key}.${definicaoLocal}`] = new RegExp(queryParams[key]![definicaoLocal], "ig");
             }
         } else if (key === "capacidade") {
             const capacidade = Number.parseInt(queryParams[key]!, 10);
             filtroMongoose["numeroDePessoas"] = capacidade;
         } else if (key === "precoMin") {
             const precoMin = Number.parseInt(queryParams[key]!, 10);
-            filtroMongoose["preco"] = { $lte: precoMin };
+            filtroMongoose["preco"] = { $gte: precoMin };
         } else if (key === "precoMax") {
             const precoMax = Number.parseInt(queryParams[key]!, 10);
-            filtroMongoose["preco"] = { $gte: precoMax };
+            // usando o spread (...) para nao sobreescrever o precoMin
+            filtroMongoose["preco"] = { ...filtroMongoose["preco"], $lte: precoMax };
         }
 
         // outras strings (nome, categoria, etc)

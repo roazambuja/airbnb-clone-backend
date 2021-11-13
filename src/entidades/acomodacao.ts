@@ -25,7 +25,6 @@ export interface Acomodacao {
         fumar: boolean;
         animais: boolean;
     };
-    reserva: boolean;
 }
 
 export const AcomodacaoSchema = new Schema<Acomodacao>({
@@ -53,7 +52,6 @@ export const AcomodacaoSchema = new Schema<Acomodacao>({
         fumar: { type: Boolean },
         animais: { type: Boolean },
     },
-    reserva: { type: Boolean },
 });
 
 export const AcomodacaoModel = model<Acomodacao>("Acomodacao", AcomodacaoSchema, "acomodacoes");

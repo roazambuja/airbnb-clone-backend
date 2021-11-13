@@ -9,6 +9,7 @@ import passport from "./config/passportSetup";
 import { json, urlencoded } from "body-parser";
 import { router as reservaRouter, path as reservaPath } from "./routes/reservas.routes";
 import { router as authRouter, path as authPath } from "./routes/auth.routes";
+import { router as acomodacoesRouter, path as acomodacoesPath } from "./routes/acomodacoes.routes";
 
 const app = express();
 app.set("port", process.env.PORT || 3000);
@@ -58,4 +59,5 @@ if (process.env.NODE_ENV !== "production") {
 
 app.use(`/api/v${process.env.API_VERSION}${authPath}`, authRouter);
 app.use(`/api/v${process.env.API_VERSION}${reservaPath}`, reservaRouter);
+app.use(`/api/v${process.env.API_VERSION}${acomodacoesPath}`, acomodacoesRouter);
 export default app;

@@ -4,5 +4,5 @@ import * as acomodacoesController from "../controllers/acomodacoes.controller";
 export const router = Router();
 export const path = "/acomodacoes";
 
-router.get(path, acomodacoesController.listarAcomodacoes);
-router.get(`${path}/:id`, acomodacoesController.acomodacaoID);
+router.get("/", acomodacoesController.listarAcomodacoes);
+router.get("/:id", acomodacoesController.acomodacaoID);
