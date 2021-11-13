@@ -6,7 +6,7 @@ export interface Acomodacao {
     descricao: string;
     categoria: string;
     imagem: string;
-    preço: number;
+    preco: number;
     local: {
         numero: number;
         rua: string;
@@ -34,7 +34,7 @@ export const AcomodacaoSchema = new Schema<Acomodacao>({
     descricao: { type: String, required: true },
     categoria: { type: String, required: true },
     imagem: { type: String, required: true },
-    preço: { type: Number, required: true },
+    preco: { type: Number, required: true },
     local: {
         numero: { type: Number, required: true },
         rua: { type: String, required: true },
