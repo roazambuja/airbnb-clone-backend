@@ -7,6 +7,7 @@ import { AcomodacaoModel } from "../entidades/acomodacao";
 export async function listarAcomodacoes(req: Request, res: Response) {
     // interface com todos os possiveis filtros
     interface queryFiltro extends qs.ParsedQs {
+        general?: string;
         nome?: string;
         categoria?: string;
         precoMin?: string;
@@ -28,7 +29,18 @@ export async function listarAcomodacoes(req: Request, res: Response) {
     for (const key in queryParams) {
         // adicione-o no objeto de filtro de acordo
 
-        if (key === "comodidades") {
+        // uma key general para procurar em todos os campos de string
+        if (key === "general") {
+            const regex = new RegExp(queryParams[key]!, "gi");
+            filtroMongoose["$or"] = [
+                { nome: regex },
+                { categoria: regex },
+                { "local.rua": regex },
+                { "local.cidade": regex },
+                { "local.estado": regex },
+                { "local.pais": regex },
+            ];
+        } else if (key === "comodidades") {
             for (const comodidade in queryParams[key]) {
                 const numComodidade = Number.parseInt(queryParams[key]![comodidade], 10);
                 filtroMongoose[`${key}.${comodidade}`] = { $gte: numComodidade };
