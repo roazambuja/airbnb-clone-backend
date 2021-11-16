@@ -34,6 +34,7 @@ export async function listarAcomodacoes(req: Request, res: Response) {
             const regex = new RegExp(queryParams[key]!, "gi");
             filtroMongoose["$or"] = [
                 { nome: regex },
+                { descricao: regex },
                 { categoria: regex },
                 { "local.rua": regex },
                 { "local.cidade": regex },
