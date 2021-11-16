@@ -31,7 +31,8 @@ export async function listarAcomodacoes(req: Request, res: Response) {
 
         // uma key general para procurar em todos os campos de string
         if (key === "general") {
-            const regex = new RegExp(queryParams[key]!, "gi");
+            const padrao = queryParams[key]!.split(" ").join("|"); // para procurar por varias palavras
+            const regex = new RegExp(padrao, "gi");
             filtroMongoose["$or"] = [
                 { nome: regex },
                 { descricao: regex },
