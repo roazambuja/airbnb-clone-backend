@@ -88,7 +88,7 @@ export async function listarAcomodacoes(req: Request, res: Response) {
                 // pegar reservas relacionada à acomodação
                 const reservas = await ReservaModel.find({ idAcomodacao: acomodacao._id });
 
-                let acomodacaoValida = false;
+                let acomodacaoValida = true;
 
                 const dataCheckIn = new Date(queryParams["check-in"]!);
                 const dataCheckOut = new Date(queryParams["check-out"]!);
@@ -100,6 +100,8 @@ export async function listarAcomodacoes(req: Request, res: Response) {
                     acomodacaoValida =
                         (dataCheckIn < dataInicioReserva && dataCheckOut < dataInicioReserva) ||
                         (dataCheckIn > dataTerminoReserva && dataCheckOut > dataTerminoReserva);
+
+                    if (!acomodacaoValida) return acomodacaoValida;
                 });
 
                 return acomodacaoValida;
