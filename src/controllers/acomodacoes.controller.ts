@@ -98,8 +98,8 @@ export async function listarAcomodacoes(req: Request, res: Response) {
                     const dataTerminoReserva = new Date(reserva.dataDeTermino);
 
                     acomodacaoValida =
-                        (dataCheckIn < dataInicioReserva || dataCheckIn > dataTerminoReserva) &&
-                        (dataCheckOut < dataTerminoReserva || dataCheckOut > dataInicioReserva);
+                        (dataCheckIn < dataInicioReserva && dataCheckOut < dataInicioReserva) ||
+                        (dataCheckIn > dataTerminoReserva && dataCheckOut > dataTerminoReserva);
                 });
 
                 return acomodacaoValida;
