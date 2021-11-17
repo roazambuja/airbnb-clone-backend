@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import qs from "qs";
 import { AcomodacaoModel } from "../entidades/acomodacao";
+import { ReservaModel } from "../entidades/reserva";
 
 // um exemplo de uri é:
 // api/v1/acomodacoes?nome=x&precoMin=0&precoMax=0&local[numero]=32&local[rua]=x&local[cidade]=x&local[estado]=x&capacidade=0&comodidades[cozinha]=0&comodidades[banheiro]=0&regras[fumar]=<1 ou 0>&regras[animais]=<1 ou 0>
@@ -8,6 +9,8 @@ export async function listarAcomodacoes(req: Request, res: Response) {
     // interface com todos os possiveis filtros
     interface queryFiltro extends qs.ParsedQs {
         general?: string;
+        "check-in"?: string;
+        "check-out"?: string;
         nome?: string;
         categoria?: string;
         precoMin?: string;
@@ -76,7 +79,33 @@ export async function listarAcomodacoes(req: Request, res: Response) {
 
     // depois, faça a requisição ao banco com o filtro criado
     try {
-        const acomodacoesFiltradas = await AcomodacaoModel.find(filtroMongoose).lean().exec();
+        let acomodacoesFiltradas = await AcomodacaoModel.find(filtroMongoose).exec();
+
+        // agora, veja se é necessário procurar pela reserva (ou seja, se estamos
+        // procurando por data de check-in e check-out)
+        if (queryParams.hasOwnProperty("check-in") && queryParams.hasOwnProperty("check-out")) {
+            acomodacoesFiltradas = acomodacoesFiltradas.filter(async (acomodacao) => {
+                // pegar reservas relacionada à acomodação
+                const reservas = await ReservaModel.find({ idAcomodacao: acomodacao._id });
+
+                let acomodacaoValida = false;
+
+                const dataCheckIn = new Date(queryParams["check-in"]!);
+                const dataCheckOut = new Date(queryParams["check-out"]!);
+
+                reservas.forEach((reserva) => {
+                    const dataInicioReserva = new Date(reserva.dataDeInicio);
+                    const dataTerminoReserva = new Date(reserva.dataDeTermino);
+
+                    acomodacaoValida =
+                        (dataCheckIn < dataInicioReserva || dataCheckIn > dataTerminoReserva) &&
+                        (dataCheckOut < dataTerminoReserva || dataCheckOut > dataInicioReserva);
+                });
+
+                return acomodacaoValida;
+            });
+        }
+
         // e retorne as acomodações encontradas
         return res.status(200).send(acomodacoesFiltradas);
     } catch (err) {
