@@ -10,4 +10,7 @@ export class ReservaRepositorio {
         return ReservaModel.find().exec();
     }
     
+    static async buscarPorId(id: string): Promise<Reserva[]>{
+        return ReservaModel.where('idAcomodacao').equals(id).exec();
+    }
 }

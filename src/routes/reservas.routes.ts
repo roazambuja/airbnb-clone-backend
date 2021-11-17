@@ -4,4 +4,5 @@ import * as ReservaController from '../controllers/reservas.controller';
 export const router= Router();
 export const path = '/reservas';
 
-router.post(path, ReservaController.register);
+router.post("/", ReservaController.register);
+router.post("/verificar", ReservaController.verify);

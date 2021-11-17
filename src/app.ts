@@ -58,6 +58,6 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 app.use(`/api/v${process.env.API_VERSION}${authPath}`, authRouter);
-app.use(`/api/v${process.env.API_VERSION}${reservaPath}`, reservaRouter);
-app.use(`/api/v${process.env.API_VERSION}${acomodacoesPath}`, acomodacoesRouter);
+app.use(`/api/v1${reservaPath}`, reservaRouter);
+app.use(`/api/v1${acomodacoesPath}`, acomodacoesRouter);
 export default app;
