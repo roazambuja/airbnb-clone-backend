@@ -24,7 +24,7 @@ mongoose
         console.error(err);
     });
 
-app.use(cors());
+app.use(cors({origin:'http://localhost:3000', credentials: true}));
 app.use(json());
 app.use(urlencoded({ extended: false }));
 
@@ -36,6 +36,7 @@ const sessionOptions = {
     store: new MongoStore({ mongoUrl: uriMongoDB }),
     cookie: {
         secure: false,
+        httpOnly:false
     },
 };
 
