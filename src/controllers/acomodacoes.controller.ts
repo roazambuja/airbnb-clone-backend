@@ -81,6 +81,7 @@ export async function listarAcomodacoes(req: Request, res: Response) {
     try {
         let acomodacoesFiltradas = await AcomodacaoModel.find(filtroMongoose).exec();
 
+        console.log(acomodacoesFiltradas.length);
         // agora, veja se é necessário procurar pela reserva (ou seja, se estamos
         // procurando por data de check-in e check-out)
         if (queryParams.hasOwnProperty("check-in") && queryParams.hasOwnProperty("check-out")) {
@@ -98,10 +99,9 @@ export async function listarAcomodacoes(req: Request, res: Response) {
                     const dataTerminoReserva = new Date(reserva.dataDeTermino);
 
                     acomodacaoValida =
-                        (dataCheckIn < dataInicioReserva && dataCheckOut < dataInicioReserva) ||
-                        (dataCheckIn > dataTerminoReserva && dataCheckOut > dataTerminoReserva);
-
-                    if (!acomodacaoValida) return acomodacaoValida;
+                        ((dataCheckIn <= dataInicioReserva && dataCheckOut <= dataInicioReserva) ||
+                        (dataCheckIn >= dataTerminoReserva && dataCheckOut >= dataTerminoReserva)) &&
+                        acomodacaoValida;
                 });
 
                 return acomodacaoValida;
@@ -109,6 +109,7 @@ export async function listarAcomodacoes(req: Request, res: Response) {
         }
 
         // e retorne as acomodações encontradas
+        console.log(acomodacoesFiltradas.length);
         return res.status(200).send(acomodacoesFiltradas);
     } catch (err) {
         return res.status(500).send({ message: err });

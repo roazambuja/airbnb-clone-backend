@@ -25,10 +25,10 @@ export async function register(
       if (reserva) {
         res.json(reserva);
       } else {
-        res.status(500).send("Ocorreu um erro ao tentar reservar esse imóvel.");
+        res.status(400).send("Ocorreu um erro ao tentar reservar esse imóvel.");
       }
     } else {
-      res.status(400).send("Dados incompletos na sua solicitação.");
+      res.status(400).send("Dados incompletos.");
     }
   } catch (error) {
     next(error);
