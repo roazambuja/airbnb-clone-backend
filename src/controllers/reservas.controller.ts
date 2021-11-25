@@ -49,7 +49,7 @@ export async function verify(req: Request, res: Response, next: NextFunction) {
         if (verificaReserva) {
           res.status(200).send("Ok");
         } else {
-          res.status(500).send("Imóvel não disponível na data solicitada.");
+          res.status(502).send("Imóvel não disponível na data solicitada.");
         }
       } catch (error) {
         next(error);

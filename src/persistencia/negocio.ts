@@ -25,13 +25,14 @@ export async function verificarDisponibilidade(idAcomodacao: string, dataDeInici
         let inicio: Number = reserva.dataDeInicio.getTime();
         let termino: Number = reserva.dataDeTermino.getTime();
 
-        acomodacaoValida = (paramInicio < inicio && paramTermino < inicio) ||
-            (paramInicio > termino && paramTermino > termino);
+        acomodacaoValida = (paramInicio <= inicio && paramTermino <= inicio) ||
+            (paramInicio >= termino && paramTermino >= termino);
 
         if (!acomodacaoValida) {
+            //return acomodacaoValida
             cont++; 
         }
     });
-
+    //return acomodacaoValida;
     return(cont===0);
 }
