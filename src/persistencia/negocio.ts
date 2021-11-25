@@ -17,7 +17,7 @@ export async function verificarDisponibilidade(idAcomodacao: string, dataDeInici
     let paramInicio: Number = new Date(dataDeInicio).getTime();
     let paramTermino: Number = new Date(dataDeTermino).getTime();
 
-    let cont: Number = 0;
+    let cont = 0;
     let acomodacaoValida: boolean = true;
 
     reservas.forEach(reserva => {
@@ -28,8 +28,10 @@ export async function verificarDisponibilidade(idAcomodacao: string, dataDeInici
         acomodacaoValida = (paramInicio < inicio && paramTermino < inicio) ||
             (paramInicio > termino && paramTermino > termino);
 
-        if (!acomodacaoValida) return acomodacaoValida;
+        if (!acomodacaoValida) {
+            cont++; 
+        }
     });
 
-    return acomodacaoValida;
+    return(cont===0);
 }
