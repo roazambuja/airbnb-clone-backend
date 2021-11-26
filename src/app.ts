@@ -33,7 +33,10 @@ const sessionOptions = {
   secret: process.env.SESSION_SECRET!,
   resave: false,
   saveUninitialized: true,
-  store: new MongoStore({ mongoUrl: uriMongoDB }),
+  store: new MongoStore({
+    mongoUrl: uriMongoDB,
+    ttl: 60 * 60 * 24, // 1 dia para remover do banco
+  }),
   cookie: {
     secure: false,
     httpOnly: false,
