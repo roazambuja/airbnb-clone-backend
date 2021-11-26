@@ -34,3 +34,7 @@ export function ensureAuthentication(req: Request, res: Response, next: NextFunc
         return res.send(401);
     }
 }
+
+export function isAuthenticated(req: Request, res: Response) {
+    return res.status(200).json({isAuthenticated: req.isAuthenticated()});
+}
