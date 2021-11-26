@@ -25,10 +25,10 @@ export async function register(
       if (reserva) {
         res.json(reserva);
       } else {
-        res.status(400).send("Cadastro não pode ser realizado");
+        res.status(400).send("Ocorreu um erro ao tentar reservar esse imóvel.");
       }
     } else {
-      res.status(400).send("Dados incompletos");
+      res.status(400).send("Dados incompletos.");
     }
   } catch (error) {
     next(error);
@@ -49,13 +49,13 @@ export async function verify(req: Request, res: Response, next: NextFunction) {
         if (verificaReserva) {
           res.status(200).send("Ok");
         } else {
-          res.status(400).send("Reserva não pode ser realizada");
+          res.status(502).send("Imóvel não disponível na data solicitada.");
         }
       } catch (error) {
         next(error);
       }
     } else {
-      res.status(400).send("Dados incompletos");
+      res.status(400).send("Dados incompletos.");
     }
   } catch (error) {
     next(error);
