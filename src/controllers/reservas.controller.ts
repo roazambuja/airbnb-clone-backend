@@ -16,7 +16,7 @@ export async function register(req: Request, res: Response, next: NextFunction) 
     if (req.user) {
       idLocador = (req.user as Express.User)._id;
     } else {
-      res.status(401).send("Usuário não está logado.");
+      return res.status(401).send("Usuário não está logado.");
     }
 
     if (idLocador && idAcomodacao && dataDeInicio && dataDeTermino) {
