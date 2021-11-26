@@ -27,6 +27,11 @@ export function register(req: Request, res: Response, next: NextFunction) {
   })(req, res, next);
 }
 
+export function logOff(req: Request, res: Response){
+  req.logOut();
+  return res.status(300).redirect(process.env.CLIENT_URL!);
+}
+
 export function ensureAuthentication(req: Request, res: Response, next: NextFunction) {
   if (req.isAuthenticated()) {
     return next();

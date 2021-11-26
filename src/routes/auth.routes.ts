@@ -7,3 +7,4 @@ export const path = "/auth";
 router.post("/register", AuthController.register);
 router.post("/login", AuthController.login);
 router.get("/isAuthenticated", AuthController.isAuthenticated);
+router.post("/logOff", AuthController.logOff);
