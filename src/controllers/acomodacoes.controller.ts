@@ -156,6 +156,8 @@ export async function criar(req: Request, res: Response, next: NextFunction) {
     } = req.body;
 
     const imagem = req.file?.filename;
+    console.log(req.body);
+    console.log(req.file?.filename);
 
     if (
       nome &&

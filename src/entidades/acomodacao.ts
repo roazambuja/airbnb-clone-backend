@@ -24,7 +24,7 @@ export interface Acomodacao {
 export const AcomodacaoSchema = new Schema<Acomodacao>(
   {
     nome: { type: String, required: true },
-    idLocador: { type: String, required: true },
+    idLocador: { type: String },
     descricao: { type: String, required: true },
     categoria: { type: String, required: true },
     imagem: { type: String, required: true },
@@ -44,8 +44,8 @@ export const AcomodacaoSchema = new Schema<Acomodacao>(
       banheiros: { type: Number, required: true },
     },
     regras: {
-      fumar: { type: Boolean, required: true },
-      animais: { type: Boolean, required: true },
+      fumar: { type: Boolean },
+      animais: { type: Boolean },
     },
   },
   {
@@ -55,8 +55,7 @@ export const AcomodacaoSchema = new Schema<Acomodacao>(
   },
 );
 AcomodacaoSchema.virtual("imagem_url").get(function (this: Acomodacao) {
-  const imagem_url = this.imagem;
-  return `http://localhost:3001/files/${imagem_url}`;
+  return `http://localhost:${process.env.PORT}/files/${this.imagem}`;
 });
 
 export const AcomodacaoModel = model<Acomodacao>(

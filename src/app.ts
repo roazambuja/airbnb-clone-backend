@@ -64,11 +64,12 @@ if (process.env.NODE_ENV !== "production") {
   app.use(morgan("tiny"));
 }
 
+app.use("/files", express.static(path.resolve(__dirname, "..", "uploads")));
 app.use(`/api/v${process.env.API_VERSION}${authPath}`, authRouter);
 app.use(`/api/v${process.env.API_VERSION}${reservaPath}`, reservaRouter);
 app.use(
   `/api/v${process.env.API_VERSION}${acomodacoesPath}`,
   acomodacoesRouter,
 );
-app.use("/files", express.static(path.resolve(__dirname, "..", "uploads")));
+
 export default app;
