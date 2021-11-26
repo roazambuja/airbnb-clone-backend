@@ -109,7 +109,6 @@ export async function listarAcomodacoes(req: Request, res: Response) {
         }
 
         // e retorne as acomodações encontradas
-        console.log(acomodacoesFiltradas.length);
         return res.status(200).send(acomodacoesFiltradas);
     } catch (err) {
         return res.status(500).send({ message: err });
