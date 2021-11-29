@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import qs from "qs";
 import { Acomodacao, AcomodacaoModel } from "../entidades/acomodacao";
 import { ReservaModel } from "../entidades/reserva";
+import { UsuarioModel } from "../entidades/usuario";
 import { criarAcomodacao } from "../persistencia/acomodacaoNegocio";
 
 // um exemplo de uri é:
@@ -140,12 +141,16 @@ export async function acomodacaoID(req: Request, res: Response) {
     return res.status(500).send({ message: err });
   }
 }
-
+declare namespace Express {
+  interface User {
+    _id?: string;
+  }
+}
 export async function criar(req: Request, res: Response, next: NextFunction) {
   try {
+    let idLocador;
     const {
       nome,
-      idLocador,
       descricao,
       categoria,
       preco,
@@ -156,12 +161,20 @@ export async function criar(req: Request, res: Response, next: NextFunction) {
     } = req.body;
 
     const imagem = req.file?.filename;
+
     console.log(req.body);
     console.log(req.file?.filename);
+    console.log(req.headers);
+
+    if (req.user) {
+      idLocador = (req.user as Express.User)._id;
+    } else {
+      return res.status(401).send("Usuário não está logado.");
+    }
 
     if (
-      nome &&
       idLocador &&
+      nome &&
       descricao &&
       categoria &&
       imagem &&
@@ -172,21 +185,22 @@ export async function criar(req: Request, res: Response, next: NextFunction) {
       regras
     ) {
       let acodamodacoes: Acomodacao = await criarAcomodacao(
-        nome,
         idLocador,
+        nome,
         descricao,
         categoria,
         imagem,
         preco,
-        local,
+        JSON.parse(local),
         numeroDePessoas,
-        comodidades,
-        regras,
+        JSON.parse(comodidades),
+        JSON.parse(regras),
       );
+
       if (acodamodacoes) {
-        res.json(acodamodacoes);
+        res.json({ acodamodacoes });
       } else {
-        res.status(400).send("Cadastro não pode ser realizado");
+        res.status(400);
       }
     } else {
       res.status(400).send("Dados incompletos");

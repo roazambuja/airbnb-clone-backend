@@ -33,7 +33,7 @@ mongoose
 
 app.use(cors());
 app.use(json());
-app.use(urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 
 // middleware para lidar a sessão de usuário
 const sessionOptions = {

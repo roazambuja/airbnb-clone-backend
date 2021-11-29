@@ -1,8 +1,8 @@
 import { Schema, model } from "mongoose";
 
 export interface Acomodacao {
-  nome: string;
   idLocador: string;
+  nome: string;
   descricao: string;
   categoria: string;
   imagem: string | undefined;
@@ -23,11 +23,11 @@ export interface Acomodacao {
 
 export const AcomodacaoSchema = new Schema<Acomodacao>(
   {
+    idLocador: { type: String, required: true },
     nome: { type: String, required: true },
-    idLocador: { type: String },
     descricao: { type: String, required: true },
     categoria: { type: String, required: true },
-    imagem: { type: String, required: true },
+    imagem: { type: String },
     preco: { type: Number, required: true },
     local: {
       rua: { type: String, required: true },
@@ -44,8 +44,8 @@ export const AcomodacaoSchema = new Schema<Acomodacao>(
       banheiros: { type: Number, required: true },
     },
     regras: {
-      fumar: { type: Boolean },
-      animais: { type: Boolean },
+      fumar: { type: Boolean, required: true },
+      animais: { type: Boolean, required: true },
     },
   },
   {

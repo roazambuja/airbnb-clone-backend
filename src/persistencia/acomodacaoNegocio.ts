@@ -1,9 +1,10 @@
+import mongoose from "mongoose";
 import { Acomodacao } from "../entidades/acomodacao";
 import { AcomodacaoRepositorio } from "./acomodacaoRepositorio";
 
 export async function criarAcomodacao(
-  nome: string,
   idLocador: string,
+  nome: string,
   descricao: string,
   categoria: string,
   imagem: string,
@@ -22,8 +23,8 @@ export async function criarAcomodacao(
   regras: { fumar: boolean; animais: boolean },
 ) {
   if (
-    nome &&
     idLocador &&
+    nome &&
     descricao &&
     categoria &&
     imagem &&
@@ -33,9 +34,9 @@ export async function criarAcomodacao(
     comodidades &&
     regras
   ) {
-    const acomodacoes: Acomodacao = {
-      nome,
+    const acomodacao: Acomodacao = {
       idLocador,
+      nome,
       descricao,
       categoria,
       imagem,
@@ -45,7 +46,7 @@ export async function criarAcomodacao(
       comodidades,
       regras,
     };
-    return await AcomodacaoRepositorio.criar(acomodacoes);
+    return await AcomodacaoRepositorio.criar(acomodacao);
   } else {
     throw new Error("Verifique as informações e tente novamente");
   }
