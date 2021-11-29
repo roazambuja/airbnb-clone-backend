@@ -5,11 +5,18 @@ import mongoose from "mongoose";
 import session from "express-session";
 import MongoStore from "connect-mongo";
 import cors from "cors";
+import path from "path";
 import passport from "./config/passportSetup";
 import { json, urlencoded } from "body-parser";
-import { router as reservaRouter, path as reservaPath } from "./routes/reservas.routes";
+import {
+  router as reservaRouter,
+  path as reservaPath,
+} from "./routes/reservas.routes";
 import { router as authRouter, path as authPath } from "./routes/auth.routes";
-import { router as acomodacoesRouter, path as acomodacoesPath } from "./routes/acomodacoes.routes";
+import {
+  router as acomodacoesRouter,
+  path as acomodacoesPath,
+} from "./routes/acomodacoes.routes";
 
 const app = express();
 app.set("port", process.env.PORT || 3000);
@@ -26,7 +33,7 @@ mongoose
 
 app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
 app.use(json());
-app.use(urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 
 // middleware para lidar a sessão de usuário
 const sessionOptions = {
@@ -61,7 +68,12 @@ if (process.env.NODE_ENV !== "production") {
   app.use(morgan("tiny"));
 }
 
+app.use("/files", express.static(path.resolve(__dirname, "..", "uploads")));
 app.use(`/api/v${process.env.API_VERSION}${authPath}`, authRouter);
 app.use(`/api/v${process.env.API_VERSION}${reservaPath}`, reservaRouter);
-app.use(`/api/v${process.env.API_VERSION}${acomodacoesPath}`, acomodacoesRouter);
+app.use(
+  `/api/v${process.env.API_VERSION}${acomodacoesPath}`,
+  acomodacoesRouter,
+);
+
 export default app;
