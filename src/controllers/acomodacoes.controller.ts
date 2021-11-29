@@ -2,8 +2,13 @@ import { Request, Response, NextFunction } from "express";
 import qs from "qs";
 import { Acomodacao, AcomodacaoModel } from "../entidades/acomodacao";
 import { ReservaModel } from "../entidades/reserva";
-import { UsuarioModel } from "../entidades/usuario";
 import { criarAcomodacao } from "../persistencia/acomodacaoNegocio";
+
+declare namespace Express {
+  interface User {
+    _id?: string;
+  }
+}
 
 // um exemplo de uri é:
 // api/v1/acomodacoes?nome=x&precoMin=0&precoMax=0&local[numero]=32&local[rua]=x&local[cidade]=x&local[estado]=x&capacidade=0&comodidades[cozinha]=0&comodidades[banheiro]=0&regras[fumar]=<1 ou 0>&regras[animais]=<1 ou 0>
@@ -26,7 +31,7 @@ export async function listarAcomodacoes(req: Request, res: Response) {
   // retirar o query para parsear com o qs
   const startOfQuery = req.originalUrl.indexOf("?");
   const query = startOfQuery !== -1 ? req.originalUrl.substring(startOfQuery + 1) : "";
-  
+
   const queryParams: queryFiltro = qs.parse(query);
 
   let filtroMongoose: { [key: string]: any } = {};
@@ -137,24 +142,12 @@ export async function acomodacaoID(req: Request, res: Response) {
     return res.status(500).send({ message: err });
   }
 }
-declare namespace Express {
-  interface User {
-    _id?: string;
-  }
-}
+
 export async function criar(req: Request, res: Response, next: NextFunction) {
   try {
     let idLocador;
-    const {
-      nome,
-      descricao,
-      categoria,
-      preco,
-      local,
-      numeroDePessoas,
-      comodidades,
-      regras,
-    } = req.body;
+    const { nome, descricao, categoria, preco, local, numeroDePessoas, comodidades, regras } =
+      req.body;
 
     const imagem = req.file?.filename;
 
@@ -180,7 +173,7 @@ export async function criar(req: Request, res: Response, next: NextFunction) {
       comodidades &&
       regras
     ) {
-      let acodamodacoes: Acomodacao = await criarAcomodacao(
+      let acomodacoes: Acomodacao = await criarAcomodacao(
         idLocador,
         nome,
         descricao,
@@ -190,11 +183,11 @@ export async function criar(req: Request, res: Response, next: NextFunction) {
         JSON.parse(local),
         numeroDePessoas,
         JSON.parse(comodidades),
-        JSON.parse(regras),
+        JSON.parse(regras)
       );
 
-      if (acodamodacoes) {
-        res.json({ acodamodacoes });
+      if (acomodacoes) {
+        res.json({ acomodacoes });
       } else {
         res.status(400);
       }

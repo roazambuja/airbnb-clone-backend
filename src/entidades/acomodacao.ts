@@ -52,14 +52,11 @@ export const AcomodacaoSchema = new Schema<Acomodacao>(
     toJSON: {
       virtuals: true,
     },
-  },
+  }
 );
 AcomodacaoSchema.virtual("imagem_url").get(function (this: Acomodacao) {
-  return `http://localhost:${process.env.PORT}/files/${this.imagem}`;
+  const apiUrl = process.env.APP_URL || `http://localhost:${process.env.PORT}`;
+  return `${apiUrl}/files/${this.imagem}`;
 });
 
-export const AcomodacaoModel = model<Acomodacao>(
-  "Acomodacao",
-  AcomodacaoSchema,
-  "acomodacoes",
-);
+export const AcomodacaoModel = model<Acomodacao>("Acomodacao", AcomodacaoSchema, "acomodacoes");
