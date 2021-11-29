@@ -27,9 +27,9 @@ export function register(req: Request, res: Response, next: NextFunction) {
   })(req, res, next);
 }
 
-export function logOff(req: Request, res: Response){
+export function logOff(req: Request, res: Response) {
   req.logOut();
-  return res.status(200).send();
+  return res.status(204).send();
 }
 
 export function ensureAuthentication(req: Request, res: Response, next: NextFunction) {

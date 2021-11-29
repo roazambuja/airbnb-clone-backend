@@ -173,6 +173,13 @@ export async function criar(req: Request, res: Response, next: NextFunction) {
       comodidades &&
       regras
     ) {
+      let regrasParseadas = JSON.parse(regras);
+      if (!regrasParseadas.hasOwnProperty("fumar")) {
+        regrasParseadas.fumar = false;
+      } else if (!regrasParseadas.hasOwnProperty("animais")) {
+        regrasParseadas.animais = false;
+      }
+
       let acomodacoes: Acomodacao = await criarAcomodacao(
         idLocador,
         nome,
@@ -183,7 +190,7 @@ export async function criar(req: Request, res: Response, next: NextFunction) {
         JSON.parse(local),
         numeroDePessoas,
         JSON.parse(comodidades),
-        JSON.parse(regras)
+        regrasParseadas
       );
 
       if (acomodacoes) {
